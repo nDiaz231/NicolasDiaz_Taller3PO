@@ -3,16 +3,18 @@ package dominio;
 public abstract class Tarea {
 	protected String id;
 	protected String proyectoId;
+	protected String tipo;
 	protected String descripcion;
 	protected String estado;
 	protected String responsable;
 	protected String complejidad;
 	protected String fecha;
 	
-	public Tarea(String id, String proyectoId, String descripcion, String estado, String responsable,
+	public Tarea(String id, String proyectoId,String tipo, String descripcion, String estado, String responsable,
 			String complejidad, String fecha) {
 		this.id = id;
 		this.proyectoId = proyectoId;
+		this.tipo=tipo;
 		this.descripcion = descripcion;
 		this.estado = estado;
 		this.responsable = responsable;

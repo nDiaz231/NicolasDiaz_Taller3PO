@@ -2,9 +2,11 @@ package dominio;
 
 public class Feature extends Tarea{
 
-	public Feature(String id, String proyectoId, String descripcion, String estado, String responsable,
+
+
+	public Feature(String id, String proyectoId, String tipo, String descripcion, String estado, String responsable,
 			String complejidad, String fecha) {
-		super(id, proyectoId, descripcion, estado, responsable, complejidad, fecha);
+		super(id, proyectoId, tipo, descripcion, estado, responsable, complejidad, fecha);
 		// TODO Auto-generated constructor stub
 	}
 
