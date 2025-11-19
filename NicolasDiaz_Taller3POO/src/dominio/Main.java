@@ -69,12 +69,73 @@ public class Main {
 			case 3:
 				agregarEliminarTareas();
 				break;
+			case 4:
+				asignarPrioridades();
+				break;
 			}
 			
 		}
 	}
 
 	
+
+	private static void asignarPrioridades() {
+		System.out.println();
+		System.out.println("---AsignarPrioridades---");
+		System.out.println("IDs Proyectos");
+		for(Proyecto p : SistemaEspecifico.getInstance().getProyectos()) {
+			System.out.println("Proyecto "+p.getNombre() + ", ID: "+p.getId());
+		}
+		System.out.print("Ingrese ID del proyecto a ordenar: >");
+		String id = s.nextLine();
+		
+		Proyecto proyectoBuscado = SistemaEspecifico.getInstance().buscarProyecto(id);
+		
+		if (proyectoBuscado == null) {
+			System.out.println("Proyecto no existe");
+			return;
+			
+		}
+		if (proyectoBuscado.getTarea().isEmpty()) {
+			System.out.println("El proyecto no tiene tareas asociadas");
+			return;
+		}
+		
+		System.out.println("Asignación de prioridades");
+		System.out.println("1) Por fecha de creacion");
+		System.out.println("2) Por impacto");
+		System.out.println("3) Por complejidad");
+		System.out.println("4) Volver");
+		System.out.print("Ingrese su opción: >");
+		int opcion = s.nextInt();
+		s.nextLine();
+		
+		EstrategiaDePriorizacion estrategia = null;
+		switch (opcion) {
+		case 1:
+			estrategia = new PriorizacionPorFecha();
+			break;
+		case 2:
+			estrategia = new PriorizacionPorImpacto();
+			break;
+		case 3:
+			estrategia = new PriorizacionPorComplejidad();
+			break;
+		case 4:
+			System.out.println("Volviendo...");
+			break;
+		default:
+			System.out.println("Ingrese valor valido ");
+			}
+		
+		estrategia.ordenar(proyectoBuscado.getTarea());
+		
+		
+		System.out.println("---Prioridades---");
+		for(Tarea t: proyectoBuscado.getTarea()) {
+			System.out.println("ID: "+t.getId()+ ", Tipo: "+t.getTipo()+ ", Complejidad: "+t.getComplejidad()+ ", Fecha: "+t.getFecha());
+		}
+	}
 
 	private static void agregarEliminarTareas() {
 	System.out.println();
@@ -154,6 +215,11 @@ public class Main {
 		}else {
 			System.out.println("Proyecto inexistente ");
 		}
+	case 3:
+		System.out.println("Volviendo...");
+		break;
+	default:
+		System.out.println("Ingrese valor valido");
 	}
 	}
 
