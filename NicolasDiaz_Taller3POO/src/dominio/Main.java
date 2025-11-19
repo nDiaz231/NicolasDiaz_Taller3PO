@@ -66,6 +66,8 @@ public class Main {
 			case 2:
 				verTareasAsignadas(usuario);
 				break;
+			case 3:
+				
 			}
 			
 		}
@@ -73,6 +75,21 @@ public class Main {
 
 	private static void verTareasAsignadas(Usuario usuario) {
 		System.out.println("");
+		System.out.println("Tareas asignadas a "+usuario.getNombre());
+		for(Proyecto p : SistemaEspecifico.getInstance().getProyectos()) {
+			System.out.println("-----");
+			System.out.println("Tarea ");
+			for(Tarea t: p.getTarea()) {
+				
+				if(t.getResponsable().equalsIgnoreCase(usuario.getNombre())) {
+					System.out.println("ID: "+t.getId());
+					System.out.println("Descripcion: "+t.getDescripcion());
+					System.out.println("Estado: "+t.getEstado());
+					System.out.println("Tipo: "+t.getTipo());
+				}
+			
+			}
+		}
 	}
 
 	private static void mostrarListaProyectos() {
