@@ -39,31 +39,40 @@ public class Main {
 			if(usuario.getRol().equalsIgnoreCase("Administrador")) {
 				mostrarMenuAdmin();
 			}else {
-				mostrarMenuUsuario();
+				mostrarMenuUsuario(usuario);
 			}
 			System.out.println("Cerrando sesión "+usuario.getNombre());
 		}
 	}
 
-	private static void mostrarMenuUsuario() {
+	private static void mostrarMenuUsuario(Usuario usuario) {
 		boolean activo = true;
 		int opcion = 0;
 		while(activo) {
 			System.out.println();
+			System.out.println("---Menu usuario---");
 			System.out.println("1) Mostrar lista de proyectos");
 			System.out.println("2) Ver tareas asignadas");
 			System.out.println("3) Actualizar estado de una tarea");
 			System.out.println("4) Aplicar acciones");
 			System.out.println("5) Cerrar sesión");
+			System.out.print("Eliga la opcion : >");
 			opcion = s.nextInt();
 			s.nextLine();
 			switch (opcion) {
 			case 1:
 				mostrarListaProyectos();
 				break;
+			case 2:
+				verTareasAsignadas(usuario);
+				break;
 			}
 			
 		}
+	}
+
+	private static void verTareasAsignadas(Usuario usuario) {
+		System.out.println("");
 	}
 
 	private static void mostrarListaProyectos() {
@@ -89,7 +98,7 @@ public class Main {
 			System.out.println("4) Asignar prioridades");
 			System.out.println("5) Generar reporte de proyectos ");
 			System.out.println("6) Volver al inicio de sesión");
-			System.out.print("Eliga la opcion : >")			;
+			System.out.print("Eliga la opcion : >");
 			opcion = s.nextInt();
 			s.nextLine();
 			switch (opcion) {
