@@ -36,6 +36,13 @@ public abstract class Tarea {
 	
 	
 	
+	
+	public String getTipo() {
+		return tipo;
+	}
+	public void setTipo(String tipo) {
+		this.tipo = tipo;
+	}
 	public String getId() {
 		return id;
 	}

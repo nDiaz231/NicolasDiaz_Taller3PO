@@ -5,8 +5,8 @@ import java.util.ArrayList;
 public class SistemaEspecifico {
 	
 	private static SistemaEspecifico instance;
-	private static ArrayList<Proyecto> proyectos;
-	private static ArrayList<Usuario> usuarios;
+	private  ArrayList<Proyecto> proyectos;
+	private  ArrayList<Usuario> usuarios;
 	public SistemaEspecifico() {
 		this.proyectos= new ArrayList<>();
 		this.usuarios = new ArrayList<>();
@@ -18,17 +18,18 @@ public class SistemaEspecifico {
 		}
 		return instance;
 	}
-	public static ArrayList<Proyecto> getProyectos() {
+	
+	public ArrayList<Proyecto> getProyectos() {
 		return proyectos;
 	}
-	public static void setProyectos(ArrayList<Proyecto> proyectos) {
-		SistemaEspecifico.proyectos = proyectos;
+	public void setProyectos(ArrayList<Proyecto> proyectos) {
+		this.proyectos = proyectos;
 	}
-	public static ArrayList<Usuario> getUsuarios() {
+	public ArrayList<Usuario> getUsuarios() {
 		return usuarios;
 	}
-	public static void setUsuarios(ArrayList<Usuario> usuarios) {
-		SistemaEspecifico.usuarios = usuarios;
+	public void setUsuarios(ArrayList<Usuario> usuarios) {
+		this.usuarios = usuarios;
 	}
 	public static void setInstance(SistemaEspecifico instance) {
 		SistemaEspecifico.instance = instance;
