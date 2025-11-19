@@ -2,6 +2,8 @@ package dominio;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Scanner;
@@ -11,7 +13,7 @@ public class Main {
 
 	
 	
-	public static void main(String[] args) throws FileNotFoundException {
+	public static void main(String[] args) throws IOException {
 		s = new Scanner(System.in);
 		lecturaProyecto();
 		lecturaTarea();
@@ -20,7 +22,7 @@ public class Main {
 		s.close();
 	}
 
-	private static void mostarMenuLogin() {
+	private static void mostarMenuLogin() throws IOException {
 		System.out.println("Bienvenido");
 		System.out.print("Ingrese su nombre de usuario: > ");
 		String nombre = s.nextLine();
@@ -44,7 +46,7 @@ public class Main {
 		
 	}
 
-	private static void mostrarMenuAdmin() {
+	private static void mostrarMenuAdmin() throws IOException {
 		boolean activo = true;
 		int opcion = 0;
 		while (activo) {
@@ -56,7 +58,7 @@ public class Main {
 			System.out.println("4) Asignar prioridades");
 			System.out.println("5) Generar reporte de proyectos ");
 			System.out.println("6) Volver al inicio de sesión");
-			System.out.print("Eliga la opcion : >");
+			System.out.print("Eliga la opcion : >")			;
 			opcion = s.nextInt();
 			s.nextLine();
 			switch (opcion) {
@@ -72,12 +74,50 @@ public class Main {
 			case 4:
 				asignarPrioridades();
 				break;
+			case 5:
+				generarReporte();
 			}
 			
 		}
 	}
 
 	
+
+	private static void generarReporte() throws IOException {
+		System.out.println();
+		System.out.println("---Generando Reporte---");
+		ArrayList<Proyecto> lista = SistemaEspecifico.getInstance().getProyectos();
+		
+		try (FileWriter writer = new FileWriter("reportes.txt",true)) {
+			writer.write("\n");
+			writer.write("---Reporte---");
+			writer.write("\n");
+			for (Proyecto p: lista) {
+				writer.write("\n");
+				writer.write("Proyecto: "+p.getNombre()+"\n");
+				writer.write("ID: "+p.getId()+"\n");
+				writer.write("Responsable: "+p.getResponsable()+"\n");
+				writer.write("--------"+"\n");
+				writer.write("Tareas "+"\n");
+				if(p.getTarea().isEmpty()) {
+					writer.write("No tiene tareas asociadas"+"\n");
+				}else {
+					for(Tarea t: p.getTarea()) {
+						writer.write("\n");
+						writer.write("ID: "+t.getId()+"\n");
+						writer.write("Estado: "+t.getEstado()+"\n");
+						
+					}
+				}
+				
+
+			}
+		}
+		System.out.println();
+		System.out.println("---Reporte generado---");
+		
+				
+	}
 
 	private static void asignarPrioridades() {
 		System.out.println();
@@ -105,7 +145,6 @@ public class Main {
 		System.out.println("1) Por fecha de creacion");
 		System.out.println("2) Por impacto");
 		System.out.println("3) Por complejidad");
-		System.out.println("4) Volver");
 		System.out.print("Ingrese su opción: >");
 		int opcion = s.nextInt();
 		s.nextLine();
@@ -121,9 +160,7 @@ public class Main {
 		case 3:
 			estrategia = new PriorizacionPorComplejidad();
 			break;
-		case 4:
-			System.out.println("Volviendo...");
-			break;
+
 		default:
 			System.out.println("Ingrese valor valido ");
 			}
