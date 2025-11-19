@@ -6,27 +6,25 @@ import java.util.ArrayList;
 import java.util.Scanner;
 
 public class Main {
-	private static ArrayList<Proyecto> proyectos = new ArrayList<>();
-	private static ArrayList<Usuario> usuarios = new ArrayList<>();
+	private static Scanner s ;
+
 	
 	
 	public static void main(String[] args) throws FileNotFoundException {
 		lecturaProyecto();
 		lecturaTarea();
 		lecturaUsuario();
-		
-		
 		mostarMenuLogin();
 	}
 
 	private static void mostarMenuLogin() {
-		Scanner s = new Scanner(System.in);
+		 s = new Scanner(System.in);
 		System.out.println("Bienvenido");
 		System.out.print("Ingrese su nombre de usuario: > ");
 		String nombre = s.nextLine();
 		System.out.print("Ingrese su constraseña: > ");
 		String constraseña = s.nextLine();
-		Usuario usuario=verificacion(nombre,constraseña);
+		Usuario usuario=SistemaEspecifico.getInstance().verificacion(nombre, constraseña);
 		if (usuario == null) {
 			System.out.println("Error nombre de usuario o constraseña incorrecta");
 		}else {
@@ -46,18 +44,27 @@ public class Main {
 	}
 
 	private static void mostrarMenuAdmin() {
-		// TODO Auto-generated method stub
-		
+		boolean activo = true;
+		int opcion = 0;
+		s = new Scanner(System.in);
+		while (activo) {
+			System.out.println("--Menu admin--");
+			System.out.println("1) Ver lista completa de proyectos y tareas");
+			System.out.println("2) Agregar o eliminar un proyecto");
+			System.out.println("3) Asignar prioridades");
+			System.out.println("4) Generar reporte de proyectos ");
+			System.out.println("5) Volver al inicio de sesión");
+			System.out.print("Eliga la opcion : >");
+			opcion = s.nextInt();
+			s.nextLine();
+			switch (opcion) {
+			
+			}
+			
+		}
 	}
 
-	private static Usuario verificacion(String nombre, String constraseña) {
-		for (Usuario u : usuarios) {
-			if(u.getNombre().equals(nombre) && u.getContraseña().equals(constraseña)) {
-				return u;
-			}
-		}
-		return null;
-	}
+	
 
 	private static void lecturaUsuario() throws FileNotFoundException {
 		File arch = new File("usuarios.txt");
@@ -70,7 +77,7 @@ public class Main {
 		String rol= datos[2];
 		
 		Usuario usuario = new Usuario(nombre,contraseña,rol);
-		usuarios.add(usuario);
+		SistemaEspecifico.getInstance().agregarUsuario(usuario);
 		}
 		s.close();
 
@@ -92,14 +99,14 @@ public class Main {
 		String fecha = datos [7];
 		
 		Tarea tarea = TareaFactory.crearTarea(idProyecto, idTarea, tipo, descripcion, estado, responsable, complejidad, fecha);
-		
-		for (Proyecto p: proyectos) {
-			if(p.getId().equalsIgnoreCase(idProyecto)) {
-				p.agregarTarea(tarea);
-				break;
-				
-			}
+		Proyecto p =  SistemaEspecifico.getInstance().buscarProyecto(idProyecto);
+		if (p != null) {
+			p.agregarTarea(tarea);
 		}
+	
+				
+			
+		
 		}
 		
 		s.close();
@@ -116,7 +123,7 @@ public class Main {
 		String nombre= datos[1];
 		String responsable = datos [2];
 		Proyecto proyecto = new Proyecto(idProyecto,nombre,responsable);
-		proyectos.add(proyecto);
+		SistemaEspecifico.getInstance().agregarProyecto(proyecto);
 		}
 		s.close();
 	}
