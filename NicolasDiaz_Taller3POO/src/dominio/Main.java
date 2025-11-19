@@ -3,6 +3,7 @@ package dominio;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.Scanner;
 
 public class Main {
@@ -11,15 +12,15 @@ public class Main {
 	
 	
 	public static void main(String[] args) throws FileNotFoundException {
-		
+		s = new Scanner(System.in);
 		lecturaProyecto();
 		lecturaTarea();
 		lecturaUsuario();
 		mostarMenuLogin();
+		s.close();
 	}
 
 	private static void mostarMenuLogin() {
-		 s = new Scanner(System.in);
 		System.out.println("Bienvenido");
 		System.out.print("Ingrese su nombre de usuario: > ");
 		String nombre = s.nextLine();
@@ -36,7 +37,6 @@ public class Main {
 				mostrarMenuUsuario();
 			}
 		}
-		s.close();
 	}
 
 	private static void mostrarMenuUsuario() {
@@ -47,7 +47,6 @@ public class Main {
 	private static void mostrarMenuAdmin() {
 		boolean activo = true;
 		int opcion = 0;
-		s = new Scanner(System.in);
 		while (activo) {
 			System.out.println();
 			System.out.println("--Menu admin--");
@@ -79,7 +78,6 @@ public class Main {
 
 	private static void agregarEliminarTareas() {
 	System.out.println();
-	s= new Scanner(System.in);
 	int opcion = 0;
 	System.out.println("---Agregar o Elimnar Tarea---");
 	System.out.println("1) Agregar Tarea");
@@ -93,13 +91,74 @@ public class Main {
 	case 1:
 		System.out.println();
 		System.out.println("---Creación de tareas");
-		System.out.println("");
+		System.out.print("Ingrese ID de proyecto al cual agregar la tarea: > ");
+		String id = s.nextLine();
+		Proyecto proyectoBuscado= SistemaEspecifico.getInstance().buscarProyecto(id);
+		if( proyectoBuscado == null) {
+			System.out.println("ID inexistente ");
+			return;
+		}
+		System.out.print("Ingrese ID de la tarea: >");
+		String idTarea=s.nextLine();
+		if (proyectoBuscado != null) {
+			ArrayList<Tarea> tareas = proyectoBuscado.getTarea();
+			for (Tarea t : tareas) {
+				if (t.getId().equalsIgnoreCase(idTarea)) {
+					System.out.println("ID Existente");
+					return;
+				}
+			}
+		}
+		System.out.print("Ingrese tipo de la tarea: >");
+		String tipo=s.nextLine();
+		System.out.print("Ingrese descripción de la tarea: >");
+		String descripcion = s.nextLine();
+		System.out.print("Ingrese estado de la tarea: >");
+		String estado = s.nextLine();
+		System.out.print("Ingrese responsable de la tarea: >");
+		String responsable = s.nextLine();
+		System.out.print("Ingrese complejidad de la tarea: >");
+		String complejidad = s.nextLine();
+		String fecha = new Date().toString();
+		
+		
+		Tarea tareaNueva = TareaFactory.crearTarea(idTarea, id, tipo, descripcion, estado, responsable, complejidad, fecha);
+		
+		proyectoBuscado.agregarTarea(tareaNueva);
+		System.out.println("Tarea Agregada");
+		break;
+		
+	case 2:
+		System.out.println();
+		System.out.println("---Eliminar Tarea---");
+		System.out.print("Ingrese id del proyecto : >");
+		String idProyecto = s.nextLine();
+		Proyecto proyectoTarea= SistemaEspecifico.getInstance().buscarProyecto(idProyecto);
+		if (proyectoTarea != null) {
+			ArrayList<Tarea> tareas = proyectoTarea.getTarea();
+			System.out.println("Tareas asociadas a "+ proyectoTarea.getNombre());
+			for (Tarea t : tareas) {
+				System.out.println("Tarea ID: "+t.getId() + ", Tipo" + t.getTipo() + ", Descripcion "+ t.getDescripcion());
+			}
+			System.out.println();
+			System.out.print("Ingrese ID de la tarea a eliminar: > ");
+			String idBorrar = s.nextLine();
+			for (int i = 0; i <tareas.size(); i++) {
+				if ( tareas.get(i).getId().equalsIgnoreCase(idBorrar)) {
+					tareas.remove(i);
+					System.out.println("Tarea eliminada");
+					break;
+				}
+			}
+			
+		}else {
+			System.out.println("Proyecto inexistente ");
+		}
 	}
 	}
 
 	private static void agregarEliminarProyecto() {
 		System.out.println();
-		s = new Scanner(System.in);
 		int opcion = 0;
 		System.out.println("---Agregar o Eliminar Proyecto---");
 		System.out.println("1) Agregar proyecto");
@@ -167,7 +226,7 @@ public class Main {
 			else {
 				System.out.println("Tareas asociadas ");
 				for(Tarea t: tareas) {
-					System.out.println(" (Tipo: "+t.getTipo()+", Descripción: "+t.getDescripcion()+")");
+					System.out.println(" (ID: "+t.getId()+", Tipo: "+t.getTipo()+", Descripción: "+t.getDescripcion()+")");
 					}
 			}
 			
@@ -207,7 +266,7 @@ public class Main {
 		String complejidad = datos [6];
 		String fecha = datos [7];
 		
-		Tarea tarea = TareaFactory.crearTarea(idProyecto, idTarea, tipo, descripcion, estado, responsable, complejidad, fecha);
+		Tarea tarea = TareaFactory.crearTarea(idTarea, idProyecto, tipo, descripcion, estado, responsable, complejidad, fecha);
 		Proyecto p =  SistemaEspecifico.getInstance().buscarProyecto(idProyecto);
 		if (p != null) {
 			p.agregarTarea(tarea);
