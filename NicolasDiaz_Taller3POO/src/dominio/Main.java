@@ -18,7 +18,10 @@ public class Main {
 		lecturaProyecto();
 		lecturaTarea();
 		lecturaUsuario();
-		mostarMenuLogin();
+		boolean activo = true;
+		while(activo) {
+			mostarMenuLogin();
+		}
 		s.close();
 	}
 
@@ -38,12 +41,40 @@ public class Main {
 			}else {
 				mostrarMenuUsuario();
 			}
+			System.out.println("Cerrando sesión "+usuario.getNombre());
 		}
 	}
 
 	private static void mostrarMenuUsuario() {
-		// TODO Auto-generated method stub
-		
+		boolean activo = true;
+		int opcion = 0;
+		while(activo) {
+			System.out.println();
+			System.out.println("1) Mostrar lista de proyectos");
+			System.out.println("2) Ver tareas asignadas");
+			System.out.println("3) Actualizar estado de una tarea");
+			System.out.println("4) Aplicar acciones");
+			System.out.println("5) Cerrar sesión");
+			opcion = s.nextInt();
+			s.nextLine();
+			switch (opcion) {
+			case 1:
+				mostrarListaProyectos();
+				break;
+			}
+			
+		}
+	}
+
+	private static void mostrarListaProyectos() {
+		System.out.println();
+		System.out.println("---Proyectos---");
+		for(Proyecto p :SistemaEspecifico.getInstance().getProyectos()) {
+			System.out.println("--------");
+			System.out.println("Nombre: "+p.getNombre());
+			System.out.println("ID: "+p.getId());
+			System.out.println("Responsable: "+p.getResponsable());
+		}
 	}
 
 	private static void mostrarMenuAdmin() throws IOException {
@@ -51,7 +82,7 @@ public class Main {
 		int opcion = 0;
 		while (activo) {
 			System.out.println();
-			System.out.println("--Menu admin--");
+			System.out.println("---Menu admin---");
 			System.out.println("1) Ver lista completa de proyectos y tareas");
 			System.out.println("2) Agregar o eliminar un proyecto");
 			System.out.println("3) Agregar o eliminar tarea de un proyecto");
@@ -76,6 +107,13 @@ public class Main {
 				break;
 			case 5:
 				generarReporte();
+				break;
+			case 6:
+				activo = false;
+				System.out.println("Cerrando sesión");
+				break;
+			default:
+				System.out.println("Ingrese valor valido ");
 			}
 			
 		}
