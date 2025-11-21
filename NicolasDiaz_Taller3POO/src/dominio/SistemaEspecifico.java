@@ -7,7 +7,7 @@ public class SistemaEspecifico {
 	private static SistemaEspecifico instance;
 	private  ArrayList<Proyecto> proyectos;
 	private  ArrayList<Usuario> usuarios;
-	public SistemaEspecifico() {
+	private SistemaEspecifico() {
 		this.proyectos= new ArrayList<>();
 		this.usuarios = new ArrayList<>();
 		

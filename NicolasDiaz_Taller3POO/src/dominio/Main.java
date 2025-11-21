@@ -70,8 +70,40 @@ public class Main {
 				actualizarEstado();
 				break;
 			case 4:
+				aplicarAcciones();
+				break;
+			case 5:
+				activo = false;
+				System.out.println("Cerrando sesión...");
+				break;
+				
 			}
 			
+		}
+	}
+
+	private static void aplicarAcciones() {
+		System.out.println("Aplicando acciones");
+		 System.out.print("Ingrese ID del proyecto: >");
+		String id= s.nextLine();
+		if(SistemaEspecifico.getInstance().getProyectos() == null) {
+			System.out.println("No existe");
+			return;
+		}
+		Proyecto proyectoBuscado = SistemaEspecifico.getInstance().buscarProyecto(id);
+		if(proyectoBuscado.getTarea().isEmpty()) {
+			System.out.println("No hay tareas");
+			return;
+			
+		}
+		TareaVisitor accion = new AccionesVisitor();
+		
+		
+		System.out.println("Análisis");
+		System.out.println();
+		for(Tarea t : proyectoBuscado.getTarea()) {
+			t.accept(accion);
+			System.out.println();
 		}
 	}
 
@@ -385,6 +417,7 @@ public class Main {
 		}else {
 			System.out.println("Proyecto inexistente ");
 		}
+		break;
 	case 3:
 		System.out.println("Volviendo...");
 		break;
