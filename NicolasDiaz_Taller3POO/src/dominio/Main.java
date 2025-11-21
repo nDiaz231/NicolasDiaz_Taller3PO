@@ -68,6 +68,8 @@ public class Main {
 				break;
 			case 3:
 				actualizarEstado();
+				break;
+			case 4:
 			}
 			
 		}
