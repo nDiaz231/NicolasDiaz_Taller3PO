@@ -67,10 +67,77 @@ public class Main {
 				verTareasAsignadas(usuario);
 				break;
 			case 3:
-				
+				actualizarEstado();
 			}
 			
 		}
+	}
+
+	private static void actualizarEstado() {
+		System.out.println();
+		System.out.println("---Actualizar estado---");
+		System.out.print("Ingrese la ID proyecto a cambiar: >");
+		String id = s.nextLine();
+		
+		Proyecto proyectoActualizado = SistemaEspecifico.getInstance().buscarProyecto(id);
+		if (proyectoActualizado == null) {
+		System.out.println("No existe");
+		return;
+		}
+		for(Tarea t : proyectoActualizado.getTarea()) {
+			System.out.println("ID Tarea: "+t.getId());
+		}
+	
+		
+		
+		System.out.print("Ingrese la ID de la tarea a actualizar: >");
+		String idTarea = s.nextLine();
+		Tarea tareaEncontrada = null;
+		for(Tarea t : proyectoActualizado.getTarea()) {
+			if ( t.getId().equalsIgnoreCase(idTarea)) {
+				tareaEncontrada = t;
+				break;
+			}else {
+				System.out.println("No existe");
+				return;
+			}
+		}
+		
+		System.out.println("Tarea: "+tareaEncontrada.getId());
+		System.out.println("Estado: "+tareaEncontrada.getEstado());
+		
+		
+		System.out.println("A que estado cambiar");
+		System.out.println("1) Pendiente ");
+		System.out.println("2) En progreso");
+		System.out.println("3) Completada");
+		System.out.print("Ingrese opcion: > ");
+		int opcion = s.nextInt();
+		s.nextLine();
+		
+		switch (opcion) {
+		case 1:
+			tareaEncontrada.setEstado("Pendiente");
+			System.out.println("Estado actualizado");
+			break;
+		case 2:
+			tareaEncontrada.setEstado("En progreso");
+			System.out.println("Estado actualizado");
+			break;
+		case 3:
+			tareaEncontrada.setEstado("Completado");
+			System.out.println("Estado actualizado");
+			break;
+		default:
+			System.out.println("Opcion no valida");
+		}
+		
+		
+		
+		
+		
+		
+		
 	}
 
 	private static void verTareasAsignadas(Usuario usuario) {
