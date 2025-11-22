@@ -26,6 +26,7 @@ public class Main {
 	}
 
 	private static void mostarMenuLogin() throws IOException {
+		//Menu login usando SistemaEspecifico
 		System.out.println("Bienvenido");
 		System.out.print("Ingrese su nombre de usuario: > ");
 		String nombre = s.nextLine();
@@ -46,6 +47,7 @@ public class Main {
 	}
 
 	private static void mostrarMenuUsuario(Usuario usuario) {
+		//Menu usuario
 		boolean activo = true;
 		int opcion = 0;
 		while(activo) {
@@ -83,6 +85,7 @@ public class Main {
 	}
 
 	private static void aplicarAcciones() {
+		//Aplica el patron visitor a todas las tareas de un proyecto en especifico 
 		System.out.println("Aplicando acciones");
 		 System.out.print("Ingrese ID del proyecto: >");
 		String id= s.nextLine();
@@ -115,10 +118,12 @@ public class Main {
 		
 		Proyecto proyectoActualizado = SistemaEspecifico.getInstance().buscarProyecto(id);
 		if (proyectoActualizado == null) {
+			//Verifica si existe la ID de proyecto
 		System.out.println("No existe");
 		return;
 		}
 		for(Tarea t : proyectoActualizado.getTarea()) {
+			//Imprime una pequeña guia de las ID de las tareas
 			System.out.println("ID Tarea: "+t.getId());
 		}
 	
@@ -128,6 +133,7 @@ public class Main {
 		String idTarea = s.nextLine();
 		Tarea tareaEncontrada = null;
 		for(Tarea t : proyectoActualizado.getTarea()) {
+			//Vemos las tareas asociadas a ese proyecto
 			if ( t.getId().equalsIgnoreCase(idTarea)) {
 				tareaEncontrada = t;
 				break;
@@ -150,7 +156,8 @@ public class Main {
 		s.nextLine();
 		
 		switch (opcion) {
-		case 1:
+		//Cambiamos el estado del atributo con set
+		case 1: 
 			tareaEncontrada.setEstado("Pendiente");
 			System.out.println("Estado actualizado");
 			break;
@@ -175,9 +182,12 @@ public class Main {
 	}
 
 	private static void verTareasAsignadas(Usuario usuario) {
+		
 		System.out.println("");
 		System.out.println("Tareas asignadas a "+usuario.getNombre());
 		for(Proyecto p : SistemaEspecifico.getInstance().getProyectos()) {
+			//Recorre la lista de proyectos asignada a el usuario e impreme las tareas de las cuales es responsable el usuario
+
 			System.out.println("-----");
 			System.out.println("Tarea ");
 			for(Tarea t: p.getTarea()) {
@@ -194,9 +204,11 @@ public class Main {
 	}
 
 	private static void mostrarListaProyectos() {
+
 		System.out.println();
 		System.out.println("---Proyectos---");
 		for(Proyecto p :SistemaEspecifico.getInstance().getProyectos()) {
+			//Recorre la lista de proyectos y va imprimiendo sus datos
 			System.out.println("--------");
 			System.out.println("Nombre: "+p.getNombre());
 			System.out.println("ID: "+p.getId());
@@ -205,6 +217,7 @@ public class Main {
 	}
 
 	private static void mostrarMenuAdmin() throws IOException {
+		//menu Admin
 		boolean activo = true;
 		int opcion = 0;
 		while (activo) {
@@ -249,6 +262,7 @@ public class Main {
 	
 
 	private static void generarReporte() throws IOException {
+		//Generamos reporte
 		System.out.println();
 		System.out.println("---Generando Reporte---");
 		ArrayList<Proyecto> lista = SistemaEspecifico.getInstance().getProyectos();
@@ -285,23 +299,28 @@ public class Main {
 	}
 
 	private static void asignarPrioridades() {
+		//Implementación del Strategy
 		System.out.println();
 		System.out.println("---AsignarPrioridades---");
 		System.out.println("IDs Proyectos");
 		for(Proyecto p : SistemaEspecifico.getInstance().getProyectos()) {
+			//Recorremos la lista para guiar al usuario imprimiendo las ID de los proyectos 
 			System.out.println("Proyecto "+p.getNombre() + ", ID: "+p.getId());
 		}
 		System.out.print("Ingrese ID del proyecto a ordenar: >");
 		String id = s.nextLine();
 		
 		Proyecto proyectoBuscado = SistemaEspecifico.getInstance().buscarProyecto(id);
+
 		
 		if (proyectoBuscado == null) {
+			//Verificamos que existe
 			System.out.println("Proyecto no existe");
 			return;
 			
 		}
 		if (proyectoBuscado.getTarea().isEmpty()) {
+			//Verificamos que no tenga tareas asociadas
 			System.out.println("El proyecto no tiene tareas asociadas");
 			return;
 		}
@@ -315,6 +334,7 @@ public class Main {
 		s.nextLine();
 		
 		EstrategiaDePriorizacion estrategia = null;
+		//Aplicamos Strategy 
 		switch (opcion) {
 		case 1:
 			estrategia = new PriorizacionPorFecha();
@@ -357,7 +377,9 @@ public class Main {
 		System.out.print("Ingrese ID de proyecto al cual agregar la tarea: > ");
 		String id = s.nextLine();
 		Proyecto proyectoBuscado= SistemaEspecifico.getInstance().buscarProyecto(id);
+		//Buscamos el proyecto preguntado
 		if( proyectoBuscado == null) {
+			//Verificamos que no sea inexistente 
 			System.out.println("ID inexistente ");
 			return;
 		}
@@ -365,6 +387,7 @@ public class Main {
 		String idTarea=s.nextLine();
 		if (proyectoBuscado != null) {
 			ArrayList<Tarea> tareas = proyectoBuscado.getTarea();
+			//Guardamos sus tareas
 			for (Tarea t : tareas) {
 				if (t.getId().equalsIgnoreCase(idTarea)) {
 					System.out.println("ID Existente");
@@ -386,7 +409,7 @@ public class Main {
 		
 		
 		Tarea tareaNueva = TareaFactory.crearTarea(idTarea, id, tipo, descripcion, estado, responsable, complejidad, fecha);
-		
+		//Creamos una tarea nueva gracias al Factory 
 		proyectoBuscado.agregarTarea(tareaNueva);
 		System.out.println("Tarea Agregada");
 		break;
@@ -443,6 +466,7 @@ public class Main {
 			System.out.print("Ingrese ID: >");
 			String id = s.nextLine();
 			if (SistemaEspecifico.getInstance().buscarProyecto(id) != null) {
+				//Preguntamos si la ID existe
 				System.out.println("ID existente");
 				return;
 			}
@@ -450,7 +474,7 @@ public class Main {
 			String nombre = s.nextLine();
 			System.out.print("Ingrese responsable: >");
 			String responsable = s.nextLine();			
-			Proyecto proyectoNuevo= new Proyecto(id,nombre,responsable);
+			Proyecto proyectoNuevo= new Proyecto(id,nombre,responsable); //Guardamos el proyecto y lo creamos
 			SistemaEspecifico.getInstance().agregarProyecto(proyectoNuevo);
 			
 			System.out.println("Proyecto "+ nombre+" Creado");
@@ -463,6 +487,7 @@ public class Main {
 			Proyecto proyectoEliminado=SistemaEspecifico.getInstance().buscarProyecto(idBuscada);
 			
 			if (proyectoEliminado != null) {
+				//Verificamos que la ID de proyecto sea valida
 				SistemaEspecifico.getInstance().getProyectos().remove(proyectoEliminado);
 				System.out.println("Proyecto "+ idBuscada +" Eliminado");
 			}
@@ -482,19 +507,24 @@ public class Main {
 		System.out.println();
 		System.out.println("Lista Proyectos y tareas");
 		ArrayList<Proyecto> lista = SistemaEspecifico.getInstance().getProyectos();
+		//Guardamos la lista de proyectos 
+		
 		
 		for (Proyecto p : lista) {
+			//Recorremos dicha lista
 			System.out.println("---------------------");
 			System.out.println("Proyecto: "+p.getNombre()+", ID: "+p.getId());
 			System.out.println("Responsable: "+ p.getResponsable());
 			
 			ArrayList<Tarea> tareas = p.getTarea();
 			if(tareas.isEmpty()) {
+				//Si la lista de tareas del proyecto esta vacia devolvemos 
 				System.out.println("  Sin tareas Asociadas");
 			}
 			else {
 				System.out.println("Tareas asociadas ");
 				for(Tarea t: tareas) {
+					//Imprimimos
 					System.out.println(" (ID: "+t.getId()+", Tipo: "+t.getTipo()+", Descripción: "+t.getDescripcion()+")");
 					}
 			}
@@ -504,6 +534,8 @@ public class Main {
 	}
 
 	private static void lecturaUsuario() throws FileNotFoundException {
+		//Lectura de archivo y carga de datos
+
 		File arch = new File("usuarios.txt");
 		Scanner s = new Scanner(arch);
 		while (s.hasNextLine()) {
@@ -521,6 +553,8 @@ public class Main {
 	}
 
 	private static void lecturaTarea() throws FileNotFoundException {
+		//Lectura de archivo y carga de datos
+
 		File arch = new File("tareas.txt");
 		Scanner s = new Scanner(arch);
 		while (s.hasNextLine()) {
@@ -549,7 +583,8 @@ public class Main {
 		s.close();
 	}
 
-	private static void lecturaProyecto() throws FileNotFoundException {
+	private static void lecturaProyecto() throws FileNotFoundException { 
+		//Lectura de archivo y carga de datos
 		File arch = new File("proyectos.txt");
 		Scanner s = new Scanner(arch);
 		

@@ -18,9 +18,9 @@ public class PriorizacionPorImpacto implements EstrategiaDePriorizacion {
 	}
 	@Override
 	public void ordenar(ArrayList<Tarea> tareas) {
-		int n = tareas.size();
-		for(int i = 0; i < n-1; i++) {
-			for (int j = 0; j < n-1-i; j++) {
+		//BubbleSort
+		for(int i = 0; i < tareas.size()-1; i++) {
+			for (int j = 0; j < tareas.size()-1-i; j++) {
 				Tarea t1 = tareas.get(j);
 				Tarea t2 = tareas.get(j+1);
 				

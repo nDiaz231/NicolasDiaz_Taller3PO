@@ -3,10 +3,10 @@ package dominio;
 import java.util.ArrayList;
 
 public class Proyecto {
-	private String id;
-	private String nombre;
-	private String responsable;
-	private ArrayList<Tarea> tareas;
+		private String id;
+		private String nombre;
+		private String responsable;
+		private ArrayList<Tarea> tareas;
 	public Proyecto(String id, String nombre, String responsable) {
 		this.id = id;
 		this.nombre = nombre;
